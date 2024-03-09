@@ -95,7 +95,7 @@ npm run test
 Contributions are welcome! Feel free to submit issues or pull requests for new features, bug fixes, or improvements.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 Passport.js documentation
