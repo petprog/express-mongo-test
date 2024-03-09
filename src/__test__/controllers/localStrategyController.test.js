@@ -1,4 +1,8 @@
-import { verifyCredentials } from "../../controllers/localStrategyController";
+import {
+  verifyCredentials,
+  deserialize,
+  serialize,
+} from "../../controllers/localStrategyController.mjs";
 import { User } from "../../mongoose/schemas/user";
 import { comparePassword } from "../../utils/helper";
 
@@ -11,7 +15,11 @@ jest.mock("../../utils/helper", () => ({
 describe("verifyCredentials function", () => {
   it("should verify credentials and return found user if credentials are valid", async () => {
     const mockUser = { username: "testUser", password: "password123" };
-    const mockFoundUser = { ...mockUser, password: "hashed_password123" };
+    const mockFoundUser = {
+      ...mockUser,
+      password: "hashed_password123",
+      id: "1",
+    };
     const mockDone = jest.fn();
 
     User.findOne.mockResolvedValue(mockFoundUser);
@@ -46,6 +54,7 @@ describe("verifyCredentials function", () => {
   it("should throw an error if credentials are invalid", async () => {
     const mockUser = { username: "testUser", password: "wrongPassword" };
     const mockFoundUser = {
+      id: "1",
       username: "testUser",
       password: "hashed_password123",
     };
@@ -81,5 +90,71 @@ describe("verifyCredentials function", () => {
     }
 
     expect(mockDone).toHaveBeenCalledWith(expect.any(Error), null);
+  });
+});
+
+describe("Serialize function", () => {
+  it("should serialize with user.id after user is found", async () => {
+    const mockFoundUser = {
+      id: "1",
+      username: "testUser",
+      password: "hashed_password123",
+    };
+    const mockDone = jest.fn();
+    serialize(mockFoundUser, mockDone);
+    expect(mockDone).toHaveBeenCalled();
+    expect(mockDone).toHaveBeenCalledWith(null, mockFoundUser.id);
+  });
+});
+
+describe("Deserialize function", () => {
+  it("should deserialize with user.id, show be done with user and null error", async () => {
+    const mockId = "1";
+    const mockFoundUser = {
+      id: "1",
+      username: "testUser",
+      password: "hashed_password123",
+    };
+    const mockDone = jest.fn();
+    User.findById.mockResolvedValue(mockFoundUser);
+
+    await deserialize(mockId, mockDone);
+    expect(mockDone).toHaveBeenCalled();
+    expect(mockDone).toHaveBeenCalledWith(null, mockFoundUser);
+  });
+
+  it("should be done with user after user is found when deserializing with user.id", async () => {
+    const mockId = "1";
+    const mockFoundUser = {
+      id: "1",
+      username: "testUser",
+      password: "hashed_password123",
+    };
+    const mockDone = jest.fn();
+    User.findById.mockResolvedValue(mockFoundUser);
+
+    await deserialize(mockId, mockDone);
+    expect(mockDone).toHaveBeenCalled();
+    expect(mockDone).toHaveBeenCalledWith(null, mockFoundUser);
+  });
+
+  it("should be done with error after user is not found when deserializing with user.id", async () => {
+    const mockId = "1";
+    const mockDone = jest.fn();
+    User.findById.mockResolvedValue(null);
+
+    await deserialize(mockId, mockDone);
+    expect(mockDone).toHaveBeenCalled();
+    expect(mockDone).toHaveBeenCalledWith(new Error("User not found"), null);
+  });
+
+  it("should be done with error after database error occured when deserializing with user.id", async () => {
+    const mockId = "1";
+    const mockDone = jest.fn();
+    User.findById.mockRejectedValue(new Error("Database error"));
+
+    await deserialize(mockId, mockDone);
+    expect(mockDone).toHaveBeenCalled();
+    expect(mockDone).toHaveBeenCalledWith(new Error("Database error"), null);
   });
 });
