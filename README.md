@@ -23,7 +23,7 @@ Before running the project, make sure you have the following installed:
 1. Clone the repository to your local machine:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/petprog/express-mongo-test.git
     ```
 
 2. Install dependencies:
@@ -76,6 +76,12 @@ To run the unit tests:
 npm run test
 ```
 
+To run the end-to-end tests:
+
+```bash
+npm run test:e2e
+```
+
 ### Writing Tests
 - Unit Tests: Write unit tests using Jest for individual functions, controllers, and middleware.
 - End-to-End Tests: Use SuperTest to write end-to-end tests for API endpoints, ensuring the entire application functions correctly.
@@ -97,9 +103,3 @@ Contributions are welcome! Feel free to submit issues or pull requests for new f
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-Passport.js documentation
-Express documentation
-Jest documentation
-SuperTest documentation
