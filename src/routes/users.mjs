@@ -1,78 +1,59 @@
 import { Router } from "express";
 const router = Router();
+import { param, checkSchema } from "express-validator";
 import {
-  query,
-  validationResult,
-  matchedData,
-  checkSchema,
-} from "express-validator";
-import { createUserValidationSchema } from "../utils/validationSchemas.mjs";
-import { mockUsers } from "../utils/constants.mjs";
-import { resolveIndexByUserId } from "../utils/middlewares.mjs";
+  createUserValidationSchema,
+  updateUserValidationSchema,
+  patchUserValidationSchema,
+} from "../utils/validationSchemas.mjs";
 import {
-  handleGetUserById,
+  handleGetUsers,
+  handleGetUser,
   handleCreateUser,
+  handleUpdateUser,
+  handlePatchUser,
+  handleDeleteUser,
 } from "../controllers/usersController.mjs";
+import { resolveUserById } from "../utils/middlewares.mjs";
+// import { mockUsers } from "../utils/constants.mjs";
+// import { resolveIndexByUserId } from "../utils/middlewares.mjs";
 
 router
+  .get("/api/users", handleGetUsers)
   .get(
-    "/api/users",
-    query("filter")
-      .isString()
-      .notEmpty()
-      .withMessage("Must not be empty")
-      .isLength({ min: 3, max: 10 })
-      .withMessage("Must be betweeen 3-10 characters"),
-    (req, res) => {
-      req.sessionStore.get(req.session.id, (err, sessionData) => {
-        if (err) {
-          console.log(err);
-          throw err;
-        }
-      });
-      const result = validationResult(req);
-
-      const {
-        query: { filter, value },
-      } = req;
-      if (filter && value)
-        return res.send(
-          mockUsers.filter((user) =>
-            user[filter].toLowerCase().includes(value.toLowerCase())
-          )
-        );
-      return res.send(mockUsers);
-    }
+    "/api/users/:id",
+    param("id")
+      .isLength({ min: 24, max: 24 })
+      .withMessage("Must be 24 characters"),
+    resolveUserById,
+    handleGetUser
   )
-  .get("/api/users/:id", resolveIndexByUserId, handleGetUserById)
   .post("/api/users", checkSchema(createUserValidationSchema), handleCreateUser)
-  .put("/api/users/:id", resolveIndexByUserId, (req, res) => {
-    const {
-      body: { username, displayName },
-      foundUserIndex,
-    } = req;
-    if (!username || !displayName) return res.sendStatus(400);
-
-    mockUsers[foundUserIndex] = {
-      id: mockUsers[foundUserIndex].id,
-      username,
-      displayName,
-    };
-    return res.status(200).send(mockUsers[foundUserIndex]);
-  })
-  .patch("/api/users/:id", resolveIndexByUserId, (req, res) => {
-    const { body, foundUserIndex } = req;
-    mockUsers[foundUserIndex] = {
-      ...mockUsers[foundUserIndex],
-      ...body,
-    };
-    return res.status(200).send(mockUsers[foundUserIndex]);
-  })
-
-  .delete("/api/users/:id", resolveIndexByUserId, (req, res) => {
-    const { foundUserIndex } = req;
-    mockUsers.splice(foundUserIndex, 1);
-    return res.sendStatus(200);
-  });
+  .put(
+    "/api/users/:id",
+    param("id")
+      .isLength({ min: 24, max: 24 })
+      .withMessage("Must be 24 characters"),
+    checkSchema(updateUserValidationSchema),
+    resolveUserById,
+    handleUpdateUser
+  )
+  .patch(
+    "/api/users/:id",
+    param("id")
+      .isLength({ min: 24, max: 24 })
+      .withMessage("Must be 24 characters"),
+    checkSchema(patchUserValidationSchema),
+    resolveUserById,
+    handlePatchUser
+  )
+  .delete(
+    "/api/users/:id",
+    param("id")
+      .isLength({ min: 24, max: 24 })
+      .withMessage("Must be 24 characters"),
+    resolveUserById,
+    handleDeleteUser
+  );
 
 export default router;

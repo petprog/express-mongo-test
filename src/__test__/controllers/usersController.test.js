@@ -4,7 +4,7 @@ import {
 } from "../../controllers/usersController.mjs";
 import { hashPassword } from "../../utils/helper.mjs";
 import { mockRequest, mockResponse } from "../mocks/users.mjs";
-import validator, { matchedData } from "express-validator";
+import validator from "express-validator";
 import { User } from "../../mongoose/schemas/user.mjs";
 
 jest.mock("express-validator", () => ({
