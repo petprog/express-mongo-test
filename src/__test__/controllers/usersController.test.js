@@ -2,7 +2,7 @@ import {
   handleCreateUser,
   handleGetUserById,
 } from "../../controllers/usersController.mjs";
-import { hashPassword } from "../../utils/helper.mjs";
+import { hashPassword, removePassword } from "../../utils/helper.mjs";
 import { mockRequest, mockResponse } from "../mocks/users.mjs";
 import validator from "express-validator";
 import { User } from "../../mongoose/schemas/user.mjs";
@@ -24,6 +24,10 @@ jest.mock("express-validator", () => ({
 
 jest.mock("../../utils/helper.mjs", () => ({
   hashPassword: jest.fn((password) => `hashed_${password}`),
+  removePassword: jest.fn((user) => {
+    const { password, ...rest } = user;
+    return rest;
+  }),
 }));
 
 jest.mock("../../mongoose/schemas/user.mjs");
@@ -98,11 +102,14 @@ describe("create user", () => {
     expect(saveMethod).toHaveBeenCalled();
     expect(mockResponse.status).toHaveBeenCalled();
     expect(mockResponse.status).toHaveBeenCalledWith(201);
+    expect(removePassword).toHaveBeenCalled();
+    expect(mockResponse.send).toHaveBeenCalled();
     expect(mockResponse.send).toHaveBeenCalledWith({
-      id: 1,
-      username: "test",
-      password: "hashed_password",
-      displayName: "test_name",
+      user: {
+        id: 1,
+        username: "test",
+        displayName: "test_name",
+      },
     });
   });
 

@@ -10,7 +10,7 @@ router
   })
   .get("/api/auth/status", (req, res) => {
     const { user } = req;
-    return user ? res.send(user) : res.sendStatus(401);
+    return user ? res.send({ user: user }) : res.sendStatus(401);
   })
   .post("/api/auth/logout", (req, res) => {
     const { user } = req;

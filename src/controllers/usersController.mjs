@@ -1,12 +1,8 @@
 import { hashPassword } from "../utils/helper.mjs";
 import { validationResult, matchedData } from "express-validator";
 import { User } from "../mongoose/schemas/user.mjs";
-
-const removePassword = (user) => {
-  const userWithoutPassword = { ...user.toObject() };
-  delete userWithoutPassword.password;
-  return userWithoutPassword;
-};
+import { mockUsers } from "../utils/constants.mjs";
+import { removePassword } from "../utils/helper.mjs";
 
 export const handleGetUserById = (req, res) => {
   const { foundUserIndex } = req;

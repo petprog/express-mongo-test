@@ -3,7 +3,7 @@ import { comparePassword } from "../utils/helper.mjs";
 
 export const verifyCredentials = async (username, password, done) => {
   try {
-    const foundUser = await User.findOne({ username }, "-password");
+    const foundUser = await User.findOne({ username });
     if (!foundUser) throw new Error("User not found");
     if (!comparePassword(password, foundUser.password))
       throw new Error("Invalid Credentials");
