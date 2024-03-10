@@ -1,4 +1,4 @@
-# Express MongoDB Passport Authentication with Local and Discord Strategies
+# Express Auth using MongoDB and Passport
 
 This project is an Express application with MongoDB integration, featuring authentication using Passport.js with both local and Discord strategies. It also includes comprehensive testing using Jest for unit tests and SuperTest for end-to-end tests.
 
@@ -23,7 +23,7 @@ Before running the project, make sure you have the following installed:
 1. Clone the repository to your local machine:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/petprog/express-mongo-test.git
     ```
 
 2. Install dependencies:
@@ -60,7 +60,7 @@ Before running the project, make sure you have the following installed:
 
 ### Local Authentication
 
-For local authentication, users can register with their email and password.
+For local authentication, users can register with their username and password.
 
 ### Discord Authentication
 
@@ -76,13 +76,19 @@ To run the unit tests:
 npm run test
 ```
 
+To run the end-to-end tests:
+
+```bash
+npm run test:e2e
+```
+
 ### Writing Tests
 - Unit Tests: Write unit tests using Jest for individual functions, controllers, and middleware.
 - End-to-End Tests: Use SuperTest to write end-to-end tests for API endpoints, ensuring the entire application functions correctly.
 
 
 ## Project Structure
--config/: Contains configuration files for Passport, MongoDB, and other environment variables.
+- config/: Contains configuration files MongoDB.
 - controllers/: Includes controller functions for handling authentication and other routes.
 - utils/: Custom middleware functions for authentication and error handling.
 - mongoose/schema/: MongoDB schema models.
@@ -97,9 +103,3 @@ Contributions are welcome! Feel free to submit issues or pull requests for new f
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-Passport.js documentation
-Express documentation
-Jest documentation
-SuperTest documentation
