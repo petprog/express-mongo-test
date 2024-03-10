@@ -1,5 +1,5 @@
 import passport from "passport";
-import { Strategy } from "passport-local";
+import { Strategy as LocalStrategy } from "passport-local";
 import {
   verifyCredentials,
   deserialize,
@@ -10,4 +10,4 @@ passport.serializeUser(serialize);
 
 passport.deserializeUser(deserialize);
 
-export default passport.use(new Strategy(verifyCredentials));
+export default passport.use(new LocalStrategy(verifyCredentials));

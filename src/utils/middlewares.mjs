@@ -36,3 +36,10 @@ export const resolveUserById = async (req, res, next) => {
   req.data = data;
   next();
 };
+
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).send("Unauthorized");
+};

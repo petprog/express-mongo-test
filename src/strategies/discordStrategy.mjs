@@ -1,5 +1,5 @@
 import passport from "passport";
-import { Strategy } from "passport-discord";
+import { Strategy as DiscordStrategy } from "passport-discord";
 import { config } from "dotenv";
 config();
 import { DiscordUser } from "../mongoose/schemas/discordUser.mjs";
@@ -18,7 +18,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 export default passport.use(
-  new Strategy(
+  new DiscordStrategy(
     {
       clientID: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
