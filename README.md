@@ -42,6 +42,7 @@ Before running the project, make sure you have the following installed:
     SESSION_SECRET=your-session-secret
     DISCORD_CLIENT_ID=your-discord-client-id
     DISCORD_CLIENT_SECRET=your-discord-client-secret
+    DISCORD_CALLBACK_URL=your-discord-callback-url
     COOKIE_PARSER_SECRET=your-cookie-parsr-secret
     ```
 
