@@ -23,22 +23,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    created_at: {
-      type: Date,
-      default: Date.now,
-    },
-    updated_at: {
-      type: Date,
-      default: Date.now,
-    },
   },
-  { timestamps: true }
+  {
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  }
 );
-
-// Pre-save middleware to update updated_at field
-UserSchema.pre("save", function (next) {
-  this.updated_at = new Date();
-  next();
-});
 
 export const User = mongoose.model("User", UserSchema);
