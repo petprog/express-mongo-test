@@ -9,7 +9,7 @@ import MongoStore from "connect-mongo";
 
 import "./strategies/localStrategy.mjs"; // local strategy
 
-// import "./strategies/discordStrategy.mjs"; // discord strategy
+import "./strategies/discordStrategy.mjs"; // discord strategy
 
 export function createApp() {
   const app = express();

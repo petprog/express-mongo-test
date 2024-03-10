@@ -37,7 +37,7 @@ export const resolveUserById = async (req, res, next) => {
   next();
 };
 
-const ensureAuthenticated = (req, res, next) => {
+export const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }

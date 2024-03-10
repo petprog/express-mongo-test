@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { mockUsers } from "../utils/constants.mjs";
 import passport from "passport";
+import { ensureAuthenticated } from "../utils/middlewares.mjs";
 
 const router = Router();
 
@@ -8,7 +9,7 @@ router
   .post("/api/auth", passport.authenticate("local"), (req, res) => {
     res.sendStatus(200);
   })
-  .get("/api/auth/status", (req, res) => {
+  .get("/api/auth/status", ensureAuthenticated, (req, res) => {
     const { user } = req;
     return user ? res.send({ user: user }) : res.sendStatus(401);
   })
